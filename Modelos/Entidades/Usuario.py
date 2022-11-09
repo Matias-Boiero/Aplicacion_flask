@@ -3,16 +3,16 @@ from flask_login import UserMixin
 
 class Usuario(UserMixin):   
     def __init__(self,id, nombre, apellido,username,descripcion,fechaAlta,ciudad,imagenPerfil, contraseña,email)-> None:
-        self.id=id
-        self.Nombre=nombre
-        self.Apellido=apellido
-        self.Username=username
-        self.email=email
-        self.contraseña=contraseña
-        self.Descripcion=descripcion
-        self.FechaAlta=fechaAlta
-        self.Ciudad=ciudad
-        self.ImagenPerfil=imagenPerfil
+        self.__id=id
+        self.__Nombre=nombre
+        self.__Apellido=apellido
+        self.__Username=username
+        self.__email=email
+        self.__contraseña=contraseña
+        self.__Descripcion=descripcion
+        self.__FechaAlta=fechaAlta
+        self.__Ciudad=ciudad
+        self.__ImagenPerfil=imagenPerfil
         
     
     @classmethod
@@ -21,87 +21,95 @@ class Usuario(UserMixin):
 
 # print(generate_password_hash('admin123'))
         
-
-
-
-#     @property
-#     def Nombre(self):
-#         return self.__Nombre
+    @property
+    def id(self):
+         return self.__id
 
 # #Set
-#     @Nombre.setter
-#     def Nombre(self,valor):
-#         self.__Nombre=valor
+    @id.setter
+    def id(self,valor):
+        self.__id=valor
 
-#     #Get
-#     @property
-#     def Apellido(self):
-#         return self.__Apellido
 
-# #Set
-#     @Apellido.setter
-#     def Apellido(self,valor):
-#         self.__Apellido=valor
 
-#    #Get
-#     @property
-#     def Username(self):
-#         return self.__Username
+    @property
+    def Nombre(self):
+         return self.__Nombre
 
 # #Set
-#     @Username.setter
-#     def Username(self,valor):
-#          self.__Username=valor
+    @Nombre.setter
+    def Nombre(self,valor):
+        self.__Nombre=valor
 
-#   #Get
-#     @property
-#     def Email(self):
-#         return self.__Email
+     #Get
+    @property
+    def Apellido(self):
+         return self.__Apellido
+
+ #Set
+    @Apellido.setter
+    def Apellido(self,valor):
+        self.__Apellido=valor
+
+    #Get
+    @property
+    def Username(self):
+         return self.__Username
+
+ #Set
+    @Username.setter
+    def Username(self,valor):
+        self.__Username=valor
+
+   #Get
+    @property
+    def email(self):
+         return self.__email
 # #Set
-#     @Email.setter
-#     def Email(self,valor):
-#          self.__Email=valor
+    @email.setter
+    def Email(self,valor):
+        self.__email=valor
 
-#     #Get
-#     @property
-#     def Contraseña(self):
-#         return self.__Contraseña
-# #Set
-#     @Contraseña.setter
-#     def Contraseña(self,valor):
-#          self.__Contraseña=valor
+     #Get
+    @property
+    def contraseña(self):
+         return self.__contraseña
+ #Set
+    @contraseña.setter
+    def Contraseña(self,valor):
+        self.__contraseña=valor
 
-#     #Get
-#     @property
-#     def Descripcion(self):
-#         return self.__Descripcion
+     #Get
+    @property
+    def Descripcion(self):
+         return self.__Descripcion
 
 
 
-# #Set
-#     @Descripcion.setter
-#     def Descripcion(self,valor):
-#          self.__Descripcion=valor
+ #Set
+    @Descripcion.setter
+    def Descripcion(self,valor):
+        self.__Descripcion=valor
 
-#     #Get
-#     @property
-#     def FechaAlta(self):
-#         return self.__FechaAlta
+     #Get
+    @property
+    def FechaAlta(self):
+        return self.__FechaAlta
 
-# #Set
-#     @FechaAlta.setter
-#     def FechaAlta(self,valor):
-#          self.__FechaAlta=valor
+ #Set
+    @FechaAlta.setter
+    def FechaAlta(self,valor):
+        self.__FechaAlta=valor
 
     
-#     #Get
-#     @property
-#     def Ciudad(self):
-#         return self.__Ciudad
+     #Get
+    @property
+    def Ciudad(self):
+         return self.__Ciudad
 
-# #Set
-#     @Ciudad.setter
-#     def Ciudad(self,valor):
-#          self.__Ciudad=valor
+ #Set
+    @Ciudad.setter
+    def Ciudad(self,valor):
+        self.__Ciudad=valor
 
 

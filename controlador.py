@@ -77,7 +77,9 @@ def AgregarArticulo():
 
 #EDITAR
 @controlador.route('/EditarArticulo/<string:id>')
+@login_required
 def ObtenerArticulo(id):
+    
     # GET (traigo los datos guardados de los articulos creados en una nueva vista para poder editarlos)
     cur=db.connection.cursor()
     cur.execute('SELECT * FROM articulo WHERE Id_Articulo= {0}'.format(id))

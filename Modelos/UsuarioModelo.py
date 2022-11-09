@@ -27,11 +27,11 @@ class UsuarioModelo():
         
         try:
             cursor = db.connection.cursor()
-            sql = "SELECT id, Email FROM usuario WHERE id= {}".format(id)
+            sql = "SELECT id,Username, Email FROM usuario WHERE id= {}".format(id)
             cursor.execute(sql)
             row = cursor.fetchone()
             if row != None:
-                return Usuario(row[0],None,None,None,None,None,None,None,None,row[1])
+                return Usuario(row[0],None,None,row[1],None,None,None,None,None,row[2])
             else:
                 return None
         except Exception as ex:
