@@ -1,4 +1,3 @@
-
 from sqlite3 import Cursor
 from ssl import SSLSession
 from config import config
@@ -15,19 +14,19 @@ from Modelos.UsuarioModelo import UsuarioModelo
 from Modelos.Entidades.Usuario import Usuario
 
 
-controlador = Flask(__name__)
+app = Flask(__name__)
 
-db=MySQL(controlador)
+db=MySQL(app)
 
 #SETTINGS/Session
-controlador.secret_key='mynewsecretKey'
+app.secret_key='mynewsecretKey'
 
 #Logueo de usuario
-login_manager_app=LoginManager(controlador)
+login_manager_app=LoginManager(app)
 
 @login_manager_app.user_loader
 def load_user(id):
-    
+
     return UsuarioModelo.get_id(db, id)
 
 
@@ -35,19 +34,19 @@ def load_user(id):
 
 # RUTEO
 #INDEX
-@controlador.route('/')
-def Index():  
+@app.route('/')
+def Index():
    return redirect (url_for('Login'))
 
 #INDEX
-@controlador.route('/Home')
-def Home():  
+@app.route('/Home')
+def Home():
   return render_template('index.html')
 
 
 
 #CREAR/AGREGAR
-@controlador.route('/AgregarArticulo',  methods=['POST', 'GET'])
+@app.route('/AgregarArticulo',  methods=['POST', 'GET'])
 @login_required
 def AgregarArticulo():
     # GET (consulto los datos guardados de articulos y las categorias)
@@ -56,7 +55,7 @@ def AgregarArticulo():
     listaArticulos= cur.fetchall()
     cur.execute('SELECT * FROM categoria')
     dataCat=cur.fetchall()
-    
+
     # POST (Paso por parametro los datos del formulario de creación de articulos)
     if request.method=='POST':
         Titulo= request.form['Titulo']
@@ -65,30 +64,30 @@ def AgregarArticulo():
         Categoria= request.form['Categoria']
         Administrador= request.form['Administrador']
         cur=db.connection.cursor()
-       
+
         cur.execute('INSERT INTO articulo (Titulo, Texto, FechaCreacion,Categoria_Id_Categoria,Usuario_Id_Usuario) VALUES (%s, %s,%s,%s,%s)',
         (Titulo,Texto,Fecha,Categoria,Administrador)),
         db.connection.commit()
-        flash('Articulo agregado correctamente')      
+        flash('Articulo agregado correctamente')
         return redirect(url_for('AgregarArticulo'))
-        
+
     return render_template("crearArticulos.html", articulos=listaArticulos,listaCategorias=dataCat)
-          
+
 
 #EDITAR
-@controlador.route('/EditarArticulo/<string:id>')
+@app.route('/EditarArticulo/<string:id>')
 @login_required
 def ObtenerArticulo(id):
-    
+
     # GET (traigo los datos guardados de los articulos creados en una nueva vista para poder editarlos)
     cur=db.connection.cursor()
     cur.execute('SELECT * FROM articulo WHERE Id_Articulo= {0}'.format(id))
     data=cur.fetchall()
-    
+
     return render_template('editarArticulo.html', articulosEditar=data[0])
 
 #POST -- METODO DONDE ACTUALIZO LOS DATOS CREADOS PREVIAMENTE
-@controlador.route('/ActualizarArticulo/<id>', methods= ['POST'])
+@app.route('/ActualizarArticulo/<id>', methods= ['POST'])
 @login_required
 def actualizar_articulo(id):
     if request.method=='POST':
@@ -106,7 +105,7 @@ def actualizar_articulo(id):
 
 
 #ELIMINAR
-@controlador.route('/EliminarArticulo/<string:id>')
+@app.route('/EliminarArticulo/<string:id>')
 def EliminarArticulo(id):
     cur=db.connection.cursor()
     cur.execute('DELETE FROM articulo WHERE Id_Articulo={0}'.format(id))
@@ -116,21 +115,21 @@ def EliminarArticulo(id):
 
 
 # RUTA DEL FORMULARIO DE CONTACTO
-@controlador.route('/Contacto',methods=['POST','GET'])
-def Contacto():       
+@app.route('/Contacto',methods=['POST','GET'])
+def Contacto():
     return render_template("contacto.html")
 
 # RUTA DEL FORMULARIO DE LOGIN
-@controlador.route('/Login',  methods=['POST', 'GET'])
-def Login():       
-    if request.method=='POST':            
+@app.route('/Login',  methods=['POST', 'GET'])
+def Login():
+    if request.method=='POST':
         user = Usuario(0,None,None,None,None,None,None,None,request.form['contraseña'],request.form['email'])
         usuario_logueado= UsuarioModelo.login(db, user)
-       
+
         if usuario_logueado != None:
             if usuario_logueado.contraseña:
-                login_user(usuario_logueado)    
-                     
+                login_user(usuario_logueado)
+
                 return redirect(url_for('Home'))
             else:
                 flash("Contraseña inválida...")
@@ -141,19 +140,19 @@ def Login():
     else:
         return render_template('ingresar.html')
 
-@controlador.route('/logout')
+@app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('Login'))
 
 # RUTA DEL FORMULARIO DE REGISTRO
-@controlador.route('/Registrarse',methods=['post','GET'])
-def Registrarse():       
+@app.route('/Registrarse',methods=['post','GET'])
+def Registrarse():
     return render_template("registrarse.html")
 
 
 #Puerto desde donde corremos nuestra aplicacion
 if __name__=='__main__':
-    controlador.config.from_object(config['development'])
-    controlador.run()
+    app.config.from_object(config['development'])
+    app.run()
 
